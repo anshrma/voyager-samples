@@ -23,7 +23,7 @@ Resources:
       Properties:
         ComputeEnvironmentOrder:
           - Order: 1
-            ComputeEnvironment: !Ref Environment
+            ComputeEnvironment: !Sub arn:aws:batch:${AWS::Region}:${AWS::AccountId}:compute-environment/${Environment}
         Priority: 1
         State: ENABLED
         JobQueueName: !Ref ServiceName
@@ -31,10 +31,9 @@ Resources:
       Type: AWS::Batch::JobDefinition
       Properties:
         Type: container
-        Parameters: Json object
         ContainerProperties:
-          ReadonlyRootFilesystem: true
-          Privileged: false
+          ReadonlyRootFilesystem: false
+          Privileged: true
           Vcpus: 2
           Memory: 2000
           JobRoleArn: !GetAtt JobeServiceRole.Arn
